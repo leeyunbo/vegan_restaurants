@@ -50,7 +50,7 @@ public class MapService {
                     .si(arrLine[1])
                     .gu(arrLine[2])
                     .dong(arrLine[3])
-                    .pathAddress(new StringBuilder(arrLine[5]).append(" ").append(arrLine[7]).toString())
+                    .pathAddress(arrLine[5] + " " + arrLine[7])
                     .name(arrLine[11])
                     .category(arrLine[12])
                     .x(Double.parseDouble(arrLine[23]))
