@@ -4,8 +4,12 @@ import com.vegan.restaurant.entity.Coordinate;
 import com.vegan.restaurant.repository.CoordinateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.locationtech.proj4j.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,22 +36,32 @@ public class MapService {
         coordinateRepository.saveAll(coordinates);
     }
 
-
     /**
      * 사용자의 위치 <-> 목적지까지의 거리를 구한다.
      */
-    public int calculateDistanceInKilometer(double userLat, double userLng, double venueLat, double venueLng) {
-        log.info("[{}} calculateDistanceInKilometer() start", TAG);
+    public double calculateDistanceInKilometer(Double userLat, Double userLng, Double venueLat, Double venueLng) {
+        if(venueLat == null || venueLng == null) return -1.0;
 
-        double latDistance = Math.toRadians(userLat - venueLat);
-        double lngDistance = Math.toRadians(userLng - venueLng);
+        return Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 1000;
+    }
 
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
-                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+    public Double[] convertToGpsLocation(String location) {
+        String[] arrLocation = location.split("\\|");
 
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//        CRSFactory crsFactory = new CRSFactory();
+//        CoordinateReferenceSystem WGS84 = crsFactory.createFromParameters("WGS84",
+//                "+proj=longlat +datum=WGS84 +no_defs");
+//        CoordinateReferenceSystem UTMK = crsFactory.createFromParameters("UTMK",
+//                "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs");
+//
+//        CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
+//        CoordinateTransform wgsToUtm = ctFactory.createTransform(WGS84, UTMK);
+//        ProjCoordinate result = new ProjCoordinate();
+//        wgsToUtm.transform(new ProjCoordinate(Double.parseDouble(arrLocation[0]), Double.parseDouble(arrLocation[1])), result);
+//
+//        log.info("[{}], [{}]", TAG, result.x + "," + result.y);
 
-        return (int) (Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c));
+        return new Double[] {Double.parseDouble(arrLocation[0]), Double.parseDouble(arrLocation[1]
+        )};
     }
 }
