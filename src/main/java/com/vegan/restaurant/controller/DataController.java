@@ -32,7 +32,7 @@ public class DataController {
     /**
      * 텍스트 파일에 입력된 좌표계 정보를 DB에 저장합니다.
      */
-    @GetMapping("/coordinates")
+    @GetMapping("/txt_file/coordinates")
     public ResponseEntity<?> addCoordinates(@RequestParam(name="file_path") String filePath) {
         log.info("[{}} addCoordinates() start", TAG);
 
@@ -48,7 +48,7 @@ public class DataController {
     /**
      * 텍스트 파일에 입력된 비건 레스토랑 정보를 DB에 저장합니다.
      */
-    @GetMapping("/restaurants")
+    @GetMapping("/txt_file/restaurants")
     public ResponseEntity<?> addRestaurants(@RequestParam(name="file_path") String filePath) {
         log.info("[{}} addRestaurants() start", TAG);
 
@@ -67,6 +67,19 @@ public class DataController {
     @GetMapping("/crawling/restaurants")
     public ResponseEntity<?> crawlingRestaurants(@RequestParam(name="url") String url) {
         log.info("[{}} crawlingRestaurants() start", TAG);
+
+        try {
+            List<Restaurant> restaurants = dataService.findRestaurantsByCrawling(url);
+            restaurantService.insertRestaurants(restaurants);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/converting")
+    public ResponseEntity<?> convertingLocation(@RequestParam(name="location") String location) {
+        mapService.convertToGpsLocation(location);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

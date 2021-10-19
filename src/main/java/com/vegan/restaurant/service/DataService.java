@@ -4,6 +4,10 @@ import com.vegan.restaurant.entity.Coordinate;
 import com.vegan.restaurant.entity.Restaurant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +34,6 @@ public class DataService {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
             String[] arrLine = line.split("\t");
-            log.info("[{}} insertRestaurantsInformation() start, [{}]", TAG, Arrays.toString(arrLine));
             Restaurant restaurant = Restaurant.builder()
                     .name(arrLine[1])
                     .category(arrLine[2])
@@ -59,7 +61,6 @@ public class DataService {
             if(arrLine[23].isEmpty() || arrLine[24].isEmpty())
                 continue;
 
-            log.info("[{}} insertCoordinatesInformation() start, [{}]", TAG, Arrays.toString(arrLine));
             Coordinate coordinate = Coordinate.builder()
                     .si(arrLine[1])
                     .gu(arrLine[2])
@@ -77,8 +78,24 @@ public class DataService {
         return coordinates;
     }
 
-    public List<Restaurant> findRestaurantsByCrawling(String url) {
+    public List<Restaurant> findRestaurantsByCrawling(String url) throws IOException {
+        log.info("[{}} findRestaurantsByCrawling() start", TAG);
+
         List<Restaurant> restaurants = new ArrayList<>();
+
+        Document document = Jsoup.connect(url).get();
+        Elements contents = document.getElementsByClass("FavoriteDetailItem");
+
+        for (Element content : contents) {
+            String name = content.getElementsByClass("link_txt").get(0).text();
+            String pathAddress = content.getElementsByClass("desc_region").get(0).text();
+            Restaurant restaurant = Restaurant.builder()
+                    .name(name)
+                    .address(pathAddress)
+                    .build();
+
+            restaurants.add(restaurant);
+        }
 
         return restaurants;
     }
