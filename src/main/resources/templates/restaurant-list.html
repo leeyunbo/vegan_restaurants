@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"> <head th:replace="fragments/header :: header" /> <body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>업종</th>
+                <th>설명</th>
+                <th>전화번호</th>
+                <th>거리(km)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="restaurnt, idx : ${restaurants}">
+                <td>
+                    <span th:if="${idx.index == 0}" style="font-size:30px;">👑</span>
+                    <a href="#" th:text="${restaurnt.name}" th:href="@{/restaurants/{id} (id=${restaurnt.id})}"></a>
+                </td>
+                <td th:text="${restaurnt.description}"></td>
+                <td th:text="${restaurnt.category}"></td>
+                <td th:text="${restaurnt.telephone}"></td>
+                <td th:text="${restaurnt.distance}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+<script>
+
+</script>
+</html>
