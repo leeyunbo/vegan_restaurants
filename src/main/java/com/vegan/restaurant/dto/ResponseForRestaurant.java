@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Optional;
+
 @Builder
 @AllArgsConstructor
 @Data
@@ -13,5 +15,5 @@ public class ResponseForRestaurant {
     String description;
     String category;
     String telephone;
-    double distance = -0.1;
+    Double distance;
 }

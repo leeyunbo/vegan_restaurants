@@ -4,12 +4,8 @@ import com.vegan.restaurant.entity.Coordinate;
 import com.vegan.restaurant.repository.CoordinateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.proj4j.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +19,7 @@ public class MapService {
 
     private final static String TAG = "[MapService]";
     private final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+    private final static double MAX_DISTANCE = 987654321.0;
 
     private final DataService dataService;
     private final CoordinateRepository coordinateRepository;
@@ -39,10 +36,9 @@ public class MapService {
     /**
      * 사용자의 위치 <-> 목적지까지의 거리를 구한다.
      */
-    public double calculateDistanceInKilometer(Double userLat, Double userLng, Double venueLat, Double venueLng) {
-        if(venueLat == null || venueLng == null) return -1.0;
-
-        return Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 1000;
+    public Double calculateDistanceInKilometer(Double userLat, Double userLng, Double venueLat, Double venueLng) {
+        if(venueLat == null || venueLng == null) return MAX_DISTANCE;
+        return Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 100000;
     }
 
     public Double[] convertToGpsLocation(String location) {
