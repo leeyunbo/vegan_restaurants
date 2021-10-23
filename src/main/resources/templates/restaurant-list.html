@@ -22,7 +22,7 @@
                 <td th:text="${restaurnt.description}"></td>
                 <td th:text="${restaurnt.category}"></td>
                 <td th:text="${restaurnt.telephone}"></td>
-                <td th:text="${restaurnt.distance}"></td>
+                <td th:text="${restaurnt.distance == 987654321.0 ? '거리 정보 없음' : restaurnt.distance}"></td>
             </tr>
             </tbody>
         </table>

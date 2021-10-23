@@ -37,7 +37,7 @@ public class RestaurantService {
 
         for(Restaurant restaurant : restaurants) {
             if(convertedToUTMKLocation[0] == null || convertedToUTMKLocation[1] == null) break;
-            double distance = mapService.calculateDistanceInKilometer(convertedToUTMKLocation[0], convertedToUTMKLocation[1], restaurant.getLatitude(), restaurant.getLongitude());
+            Double distance = mapService.calculateDistanceInKilometer(convertedToUTMKLocation[0], convertedToUTMKLocation[1], restaurant.getLatitude(), restaurant.getLongitude());
             responseForRestaurants.add(new ResponseForRestaurant(
                     restaurant.getId(),
                     restaurant.getName(),
@@ -48,7 +48,9 @@ public class RestaurantService {
             ));
         }
 
-        responseForRestaurants.sort((o1, o2) -> Double.compare(o2.getDistance(), o1.getDistance()));
+        responseForRestaurants.sort((o1, o2) -> {
+            return Double.compare(o1.getDistance(), o2.getDistance());
+        });
 
         return responseForRestaurants;
     }
