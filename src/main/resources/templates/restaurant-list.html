@@ -16,11 +16,10 @@
             <tbody>
             <tr th:each="restaurnt, idx : ${restaurants}">
                 <td>
-                    <span th:if="${idx.index == 0}" style="font-size:30px;">👑</span>
                     <a href="#" th:text="${restaurnt.name}" th:href="@{/restaurants/{id} (id=${restaurnt.id})}"></a>
                 </td>
-                <td th:text="${restaurnt.description}"></td>
                 <td th:text="${restaurnt.category}"></td>
+                <td th:text="${restaurnt.description.substring(0, (restaurnt.description.length() < 10 ? restaurnt.description.length() : 10)) + '...'}"></td>
                 <td th:text="${restaurnt.telephone}"></td>
                 <td th:text="${restaurnt.distance == 987654321.0 ? '거리 정보 없음' : restaurnt.distance}"></td>
             </tr>

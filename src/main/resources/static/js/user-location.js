@@ -15,7 +15,7 @@ var main = {
                 var GRS80 = new Proj4js.Proj('GRS80');
                 var WGS84 = new Proj4js.Proj('WGS84');
 
-                var utmk = new Proj4js.Point(position.coords.latitude, position.coords.longitude);
+                var utmk = new Proj4js.Point(position.coords.longitude, position.coords.latitude);
                 Proj4js.transform(WGS84, GRS80, utmk);
 
                 document.cookie = "location=" + utmk.x + "|" + utmk.y;

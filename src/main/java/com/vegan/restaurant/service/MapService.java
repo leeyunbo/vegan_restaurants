@@ -38,7 +38,7 @@ public class MapService {
      */
     public Double calculateDistanceInKilometer(Double userLat, Double userLng, Double venueLat, Double venueLng) {
         if(venueLat == null || venueLng == null) return MAX_DISTANCE;
-        return Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 100000;
+        return Math.round(Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 1000 * 100) / 100.0;
     }
 
     public Double[] convertToGpsLocation(String location) {
