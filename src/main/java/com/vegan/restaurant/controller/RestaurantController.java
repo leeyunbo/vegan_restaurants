@@ -2,6 +2,7 @@ package com.vegan.restaurant.controller;
 
 import com.vegan.restaurant.dto.ResponseForRestaurant;
 import com.vegan.restaurant.entity.Restaurant;
+import com.vegan.restaurant.service.MapService;
 import com.vegan.restaurant.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,6 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-
     private static final String TAG = "[RestaurantController]";
 
     /**

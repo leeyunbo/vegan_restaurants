@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class RestaurantService {
     private final static String TAG = "[RestaurantService]";
 
     public List<ResponseForRestaurant> findRestaurants(int pageNumber, int pageSize, String location) {
-        Double[] convertedToUTMKLocation = mapService.convertToGpsLocation(location);
+        Double[] convertedToUTMKLocation = mapService.convertToUTMKLocation(location);
         List<Restaurant> restaurants = restaurantRepository.findAll();
 
         List<ResponseForRestaurant> responseForRestaurants = new ArrayList<>();
@@ -45,9 +46,7 @@ public class RestaurantService {
             ));
         }
 
-        responseForRestaurants.sort((o1, o2) -> {
-            return Double.compare(o1.getDistance(), o2.getDistance());
-        });
+        responseForRestaurants.sort(Comparator.comparingDouble(ResponseForRestaurant::getDistance));
 
         return responseForRestaurants;
     }
