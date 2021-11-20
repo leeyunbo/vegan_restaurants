@@ -76,11 +76,4 @@ public class DataController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/converting")
-    public ResponseEntity<?> convertingLocation(@RequestParam(name="location") String location) {
-        mapService.convertToGpsLocation(location);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

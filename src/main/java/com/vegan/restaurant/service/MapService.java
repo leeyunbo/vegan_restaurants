@@ -4,6 +4,11 @@ import com.vegan.restaurant.entity.Coordinate;
 import com.vegan.restaurant.repository.CoordinateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
@@ -34,6 +39,15 @@ public class MapService {
     }
 
     /**
+     * 좌표계 정보들을 가져온다.
+     */
+    public ResponseEntity<?> getCoordinates(int pageNumber, int pageSize, String dong) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Coordinate> coordinatePage = coordinateRepository.findCoordinatesByDong(dong, pageable);
+        return new ResponseEntity<>(coordinatePage, HttpStatus.OK);
+    }
+
+    /**
      * 사용자의 위치 <-> 목적지까지의 거리를 구한다.
      */
     public Double calculateDistanceInKilometer(Double userLat, Double userLng, Double venueLat, Double venueLng) {
@@ -41,23 +55,8 @@ public class MapService {
         return Math.round(Math.sqrt((userLat-venueLat) * (userLat-venueLat) + (userLng-venueLng) * (userLng-venueLng)) / 1000 * 100) / 100.0;
     }
 
-    public Double[] convertToGpsLocation(String location) {
+    public Double[] convertToUTMKLocation(String location) {
         String[] arrLocation = location.split("\\|");
-
-//        CRSFactory crsFactory = new CRSFactory();
-//        CoordinateReferenceSystem WGS84 = crsFactory.createFromParameters("WGS84",
-//                "+proj=longlat +datum=WGS84 +no_defs");
-//        CoordinateReferenceSystem UTMK = crsFactory.createFromParameters("UTMK",
-//                "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs");
-//
-//        CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
-//        CoordinateTransform wgsToUtm = ctFactory.createTransform(WGS84, UTMK);
-//        ProjCoordinate result = new ProjCoordinate();
-//        wgsToUtm.transform(new ProjCoordinate(Double.parseDouble(arrLocation[0]), Double.parseDouble(arrLocation[1])), result);
-//
-//        log.info("[{}], [{}]", TAG, result.x + "," + result.y);
-
-        return new Double[] {Double.parseDouble(arrLocation[0]), Double.parseDouble(arrLocation[1]
-        )};
+        return new Double[] {Double.parseDouble(arrLocation[0]), Double.parseDouble(arrLocation[1])};
     }
 }

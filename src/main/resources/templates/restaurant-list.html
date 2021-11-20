@@ -8,7 +8,6 @@
             <tr>
                 <th>이름</th>
                 <th>업종</th>
-                <th>설명</th>
                 <th>전화번호</th>
                 <th>거리(km)</th>
             </tr>
@@ -19,7 +18,6 @@
                     <a href="#" th:text="${restaurnt.name}" th:href="@{/restaurants/{id} (id=${restaurnt.id})}"></a>
                 </td>
                 <td th:text="${restaurnt.category}"></td>
-                <td th:text="${restaurnt.description.substring(0, (restaurnt.description.length() < 10 ? restaurnt.description.length() : 10)) + '...'}"></td>
                 <td th:text="${restaurnt.telephone}"></td>
                 <td th:text="${restaurnt.distance == 987654321.0 ? '거리 정보 없음' : restaurnt.distance}"></td>
             </tr>

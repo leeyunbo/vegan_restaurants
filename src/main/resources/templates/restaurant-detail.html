@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+    <form th:object="${restaurant}">
+        <div class="form-group">
+            <label th:for="name">이름</label>
+            <span th:text="${restaurant.name}" class="form-control"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="category">카테고리</label>
+            <span th:text="${restaurant.category}" class="form-control"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="distance">거리(KM)</label>
+            <span th:text="${restaurant.distance}" class="form-control"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="telephone">전화번호</label>
+            <span th:text="${restaurant.telephone}" class="form-control"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="description">설명</label>
+            <span th:text="${restaurant.description}" class="form-control"></span>
+        </div>
+    </form>
+    <div th:replace="fragments/footer :: footer"></div>
+</div> <!-- /container -->
+</body>
+</html>
