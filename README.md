@@ -1,5 +1,5 @@
 # carbon_begone_vegan
-vegan 들을 위한 웹 서비스(begone, vegan) 
+vegan 들을 위한 비건 레스토랑 조회 웹 서비스(begone, vegan) 
 
 
 ### 📖 Document
