@@ -24,8 +24,6 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-    private static final String TAG = "[RestaurantController]";
-
     /**
      *  비건 식당 조회
      */
@@ -34,11 +32,23 @@ public class RestaurantController {
                                        @RequestParam(name="page_size", defaultValue = "30") int pageSize,
                                        @CookieValue(name = "location") String location,
                                        Model model) {
-        log.info("[{}} findVeganRestaurants() start", TAG);
-
         List<ResponseForRestaurant> responseForRestaurants = restaurantService.findRestaurants(pageNumber, pageSize, location);
         model.addAttribute("restaurants", responseForRestaurants);
 
         return "restaurant-list";
+    }
+
+    /**
+     * 비건 식당 상세 조회
+     */
+    @GetMapping("/{id}")
+    public String findVeganRestaurant(@PathVariable Long id,
+                                      @CookieValue(name= "location") String location,
+                                      Model model) {
+        ResponseForRestaurant responseForRestaurant = restaurantService.findRestaurant(id, location);
+        model.addAttribute("restaurant", responseForRestaurant);
+
+        return "restaurant-detail";
+
     }
 }

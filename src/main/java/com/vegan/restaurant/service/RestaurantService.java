@@ -23,9 +23,6 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final CoordinateRepository coordinateRepository;
     private final MapService mapService;
-    private final DataService dataService;
-
-    private final static String TAG = "[RestaurantService]";
 
     public List<ResponseForRestaurant> findRestaurants(int pageNumber, int pageSize, String location) {
         Double[] convertedToUTMKLocation = mapService.convertToUTMKLocation(location);
@@ -49,6 +46,22 @@ public class RestaurantService {
         responseForRestaurants.sort(Comparator.comparingDouble(ResponseForRestaurant::getDistance));
 
         return responseForRestaurants;
+    }
+
+    public ResponseForRestaurant findRestaurant(Long id, String location) {
+        Double[] convertedToUTMKLocation = mapService.convertToUTMKLocation(location);
+        Restaurant restaurant = restaurantRepository.findById(id).get();
+
+        Double distance = mapService.calculateDistanceInKilometer(convertedToUTMKLocation[0], convertedToUTMKLocation[1], restaurant.getLatitude(), restaurant.getLongitude());
+
+        return ResponseForRestaurant.builder()
+                .id(restaurant.getId())
+                .category(restaurant.getCategory())
+                .description(restaurant.getDescription())
+                .distance(distance)
+                .telephone(restaurant.getTelephone())
+                .name(restaurant.getName())
+                .build();
     }
 
     @Transactional
