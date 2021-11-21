@@ -51,4 +51,13 @@ public class RestaurantController {
         return "restaurant-detail";
 
     }
+
+    /**
+     * 비건 식당 추가
+     */
+    @PostMapping
+    public String addVeganRestaurant(Restaurant restaurant) {
+        Restaurant savedRestaurant = restaurantService.insertRestaurant(restaurant);
+        return "redirect:/restaurants/" + savedRestaurant.getId();
+    }
 }
