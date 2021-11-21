@@ -67,17 +67,27 @@ public class RestaurantService {
     @Transactional
     public void insertRestaurants(List<Restaurant> restaurants) throws IOException {
         for(Restaurant restaurant : restaurants) {
-            String[] arrAddress = restaurant.getAddress().split(" ");
-            Optional<Coordinate> coordinate = coordinateRepository.findFirstByPathAddressContains(
-                    arrAddress[2] + " " + arrAddress[3]
-            );
-
-            if (coordinate.isPresent()) {
-                restaurant.setLatitude(coordinate.get().getX());
-                restaurant.setLongitude(coordinate.get().getY());
-            }
+            setLatLon(restaurant);
         }
 
         restaurantRepository.saveAll(restaurants);
+    }
+
+    @Transactional
+    public Restaurant insertRestaurant(Restaurant restaurant) {
+        setLatLon(restaurant);
+        return restaurantRepository.save(restaurant);
+    }
+
+    private void setLatLon(Restaurant restaurant) {
+        String[] arrAddress = restaurant.getAddress().split(" ");
+        Optional<Coordinate> coordinate = coordinateRepository.findFirstByPathAddressContains(
+                arrAddress[2] + " " + arrAddress[3]
+        );
+
+        if (coordinate.isPresent()) {
+            restaurant.setLatitude(coordinate.get().getX());
+            restaurant.setLongitude(coordinate.get().getY());
+        }
     }
 }
