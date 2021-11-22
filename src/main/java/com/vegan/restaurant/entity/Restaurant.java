@@ -1,14 +1,11 @@
 package com.vegan.restaurant.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter
+@Data
 @Entity
 @Table(name="restaurants", indexes = {@Index(columnList = "name")})
 public class Restaurant {

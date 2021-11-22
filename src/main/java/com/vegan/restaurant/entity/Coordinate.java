@@ -2,13 +2,14 @@ package com.vegan.restaurant.entity;
 
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter
+@Data
 @Entity
 @Table(name="coordinates", indexes = {@Index(columnList = "pathAddress")})
 public class Coordinate {

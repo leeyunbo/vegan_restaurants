@@ -49,14 +49,21 @@ public class RestaurantController {
         model.addAttribute("restaurant", responseForRestaurant);
 
         return "restaurant-detail";
+    }
 
+    @GetMapping("/new")
+    public String addVeganRestaurantForm(Model model) {
+        Restaurant restaurant = new Restaurant();
+        model.addAttribute("restaurant", restaurant);
+        return "restaurant-add";
     }
 
     /**
      * 비건 식당 추가
      */
-    @PostMapping
+    @PostMapping("/new")
     public String addVeganRestaurant(Restaurant restaurant) {
+        log.info(restaurant.toString());
         Restaurant savedRestaurant = restaurantService.insertRestaurant(restaurant);
         return "redirect:/restaurants/" + savedRestaurant.getId();
     }
