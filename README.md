@@ -7,6 +7,7 @@
 
 ### 기술 스택 
 1. Spring MVC
-2. Thymeleaf
-3. MySQL
+2. Spring JPA
+3. Thymeleaf
+4. MySQL
 
