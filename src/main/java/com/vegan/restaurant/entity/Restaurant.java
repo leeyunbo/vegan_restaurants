@@ -3,6 +3,8 @@ package com.vegan.restaurant.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Data
@@ -15,15 +17,18 @@ public class Restaurant {
     @Column(name = "restaurant_id")
     private Long id;
 
+    @NotNull @NotBlank
     private String name;
 
     @Column(length = 4096)
     private String description;
 
+    @NotNull @NotBlank
     private String category;
 
     private String telephone;
 
+    @NotNull @NotBlank
     private String address;
 
     @Setter
